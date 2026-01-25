@@ -1,19 +1,17 @@
-FROM python:3.10-slim
+FROM python:3.9
 
 WORKDIR /app
 
-# Install dependencies
+# Copy requirements and install
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
+# Copy the rest of your code
 COPY . .
 
-# Expose ports
-EXPOSE 8000 8501
+# Set the Python Path so it can find the 'api' folder
+ENV PYTHONPATH=/app
 
-# Start script
-COPY start.sh .
-RUN chmod +x start.sh
-
-CMD ["./start.sh"]
+# Start the FastAPI app directly
+# Replace 'api.app:app' if your entry file is different
+CMD ["uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "7860"]
